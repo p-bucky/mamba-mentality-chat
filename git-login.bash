@@ -10,7 +10,7 @@ location=$1
 if [ "$location" == "home" ]; then
     ssh-add ~/.ssh/id_rsa_p_bucky
     git config --global user.email "prashanttechjha@gmail.com"
-    git config --global user.username "Bucky"
+    git config --global user.username "p-bucky"
 
     git config --global user.email
     git config --global user.username
@@ -18,7 +18,7 @@ if [ "$location" == "home" ]; then
 elif [ "$location" == "office" ]; then
     ssh-add ~/.ssh/id_rsa
     git config --global user.email "prashant.jha@junio.in"
-    git config --global user.username "prashant.junio"
+    git config --global user.username "prashant-junio"
     
     git config --global user.email
     git config --global user.username
