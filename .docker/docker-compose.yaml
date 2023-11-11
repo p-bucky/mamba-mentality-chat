@@ -1,0 +1,15 @@
+version: '3.7'
+name: "roach"
+services:
+  mongodb_container:
+    image: mongo:7.0-rc-jammy
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 1234567890
+    ports:
+      - 27018:27017
+    volumes:
+      - mongodb:/data/db
+
+volumes:
+  mongodb:
