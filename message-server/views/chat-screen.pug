@@ -1,0 +1,62 @@
+extends ./index.pug
+block content 
+  body
+    .container.mt-5
+      .row.justify-content-center
+        .col-8
+          .card
+            .card-header.text-center.bg-primary.text-white
+              h2 Chatter Box
+            .card-body
+              #chat-window
+                //- Messages will be appended here dynamically
+              hr
+              form(id="message-form" class="mb-3")
+                label(for="message" class="form-label text-primary") Your Message:
+                .input-group
+                  input#message.form-control(type="text", placeholder="Whisper something...", required)
+                  button.btn.btn-danger(type="submit") Send
+    script.
+      const urlParams = new URLSearchParams(window.location.search);
+      const personId = urlParams.get('personId');
+      const receiverId = urlParams.get('receiverId');
+
+      const ws = new WebSocket(`ws://localhost:3002/query?personId=${personId}&receiverId=${receiverId}`);
+      ws.addEventListener('open', (event) => {
+        console.log('WebSocket connection opened:', event);
+        makeConnectineAlive()
+      });
+
+      const makeConnectineAlive = () => {
+        setInterval(() => {
+          ws.send(1)
+        }, 4000)
+      }
+
+      const form = document.getElementById('message-form');
+      const chatWindow = document.getElementById('chat-window');
+      
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const messageInput = document.getElementById('message');
+        const message = messageInput.value.trim();
+        if (message !== '') {
+          ws.send(message);
+          messageInput.value = '';
+        }
+      });
+
+      ws.addEventListener('message', (event) => {
+        appendMessage(event.data);
+      });
+
+      function appendMessage(message) {
+        const newMessage = document.createElement('div');
+        newMessage.classList.add('message', 'mt-2', 'd-flex', 'justify-content-end');
+        newMessage.innerHTML = `
+          <div class="message-bubble bg-danger text-white p-3 rounded-3">
+            ${message}
+          </div>
+        `;
+        chatWindow.appendChild(newMessage);
+      }

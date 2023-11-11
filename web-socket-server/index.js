@@ -48,7 +48,7 @@ const startWebsocketServer = () => {
 
     ws.id = `CONNECTION_ID_${personId}`;
 
-    // console.log(`Client ${personId} connected by ${ws.id}`);
+    console.log(`Client ${personId} connected by ${ws.id}`);
 
     wsManager.setOnlineUser(personId, ws.id);
 
@@ -63,7 +63,6 @@ const startWebsocketServer = () => {
         const msg = await createMessage(personId, receiverId, _message);
 
         ws.send(msg.message);
-
         if (managerDB[receiverId]) {
           broadcast(managerDB[receiverId], msg.message, wss);
         } else {
