@@ -7,6 +7,7 @@ block content
           .card
             .card-header.text-center.bg-primary.text-white
               h2 Chatter Box
+              p(id="user_id")=""
             .card-body
               #chat-window
                 //- Messages will be appended here dynamically
@@ -17,9 +18,15 @@ block content
                   input#message.form-control(type="text", placeholder="Whisper something...", required)
                   button.btn.btn-danger(type="submit") Send
     script.
+      const USER = {
+        "670b4304-c8c0-456d-ad0c-5f2c2e3577c6" : "Alex",
+        "7a9bfb83-9006-4369-b727-2d7ad85d1166" : "Ramesh"
+      }
       const urlParams = new URLSearchParams(window.location.search);
       const personId = urlParams.get('personId');
       const receiverId = urlParams.get('receiverId');
+
+      document.getElementById("user_id").innerText = `${USER[personId]} -> ${USER[receiverId]}`
 
       const ws = new WebSocket(`ws://localhost:3002/query?personId=${personId}&receiverId=${receiverId}`);
       ws.addEventListener('open', (event) => {
@@ -30,7 +37,7 @@ block content
       const makeConnectineAlive = () => {
         setInterval(() => {
           ws.send(1)
-        }, 4000)
+        }, 5000)
       }
 
       const form = document.getElementById('message-form');

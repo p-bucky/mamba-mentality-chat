@@ -2,6 +2,7 @@ import ws, { WebSocketServer } from "ws";
 import url from "node:url";
 import wsManager, { managerDB } from "./manager.js";
 import { connectDatabase } from "../chat-service/index.js";
+import { v4 as uuidv4 } from 'uuid';
 import { createMessage } from "../chat-service/services/message.service.js";
 
 const PORT = 3002;
@@ -27,7 +28,7 @@ const heartbeatCheck = (ws) => {
         wsManager.deleteOnlineUser(ws.id);
         ws.close();
         console.log("CONNECTION CLOSED", ws.id);
-      }, 5000);
+      }, 10000);
     }
   };
 
@@ -46,7 +47,7 @@ const startWebsocketServer = () => {
     const personId = location.query.personId;
     const receiverId = location.query.receiverId;
 
-    ws.id = `CONNECTION_ID_${personId}`;
+    ws.id = `${uuidv4()}_${personId}`;
 
     console.log(`Client ${personId} connected by ${ws.id}`);
 
