@@ -18,6 +18,8 @@ block content
                   input#message.form-control(type="text", placeholder="Whisper something...", required)
                   button.btn.btn-danger(type="submit") Send
     script.
+      const __data = !{JSON.stringify(data)}
+
       const USER = {
         "670b4304-c8c0-456d-ad0c-5f2c2e3577c6" : "Alex",
         "7a9bfb83-9006-4369-b727-2d7ad85d1166" : "Ramesh"
@@ -54,14 +56,20 @@ block content
       });
 
       ws.addEventListener('message', (event) => {
-        appendMessage(event.data);
+        const receivedBy = event.data.split("->")[event.data.split("->").length - 1]
+        const msg = event.data.replace(`->${receivedBy}`, "")
+        appendMessage(msg, receivedBy);
       });
 
-      function appendMessage(message) {
+      __data.messages.map(item => {
+        appendMessage(item.text, item.senderId)
+      })
+
+      function appendMessage(message, receivedBy) {
         const newMessage = document.createElement('div');
-        newMessage.classList.add('message', 'mt-2', 'd-flex', 'justify-content-end');
+        newMessage.classList.add('message', 'mt-2', 'd-flex', `${receivedBy == personId ? "justify-content-end" : "justify-content-start"}`);
         newMessage.innerHTML = `
-          <div class="message-bubble bg-danger text-white p-3 rounded-3">
+          <div class="message-bubble ${receivedBy == personId ? "bg-success" : "bg-danger"} text-white p-3 rounded-3">
             ${message}
           </div>
         `;

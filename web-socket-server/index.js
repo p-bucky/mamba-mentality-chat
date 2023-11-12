@@ -63,9 +63,9 @@ const startWebsocketServer = () => {
 
         const msg = await createMessage(personId, receiverId, _message);
 
-        ws.send(msg.message);
+        ws.send(`${msg.message}->${personId}`);
         if (managerDB[receiverId]) {
-          broadcast(managerDB[receiverId], msg.message, wss);
+          broadcast(managerDB[receiverId], `${msg.message}->${personId}`, wss);
         } else {
           // send notification using kafka
         }
