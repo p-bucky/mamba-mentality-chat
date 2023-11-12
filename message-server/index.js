@@ -42,3 +42,6 @@ const port = 3001;
     console.log(`Server is listening at http://localhost:${port}`);
   });
 })();
+
+// http://localhost:3001/chat?receiverId=670b4304-c8c0-456d-ad0c-5f2c2e3577c6&personId=7a9bfb83-9006-4369-b727-2d7ad85d1166
+// http://localhost:3001/chat?personId=670b4304-c8c0-456d-ad0c-5f2c2e3577c6&receiverId=7a9bfb83-9006-4369-b727-2d7ad85d1166
